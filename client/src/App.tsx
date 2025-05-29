@@ -12,6 +12,8 @@ import AdminAbout from "@/pages/admin/about";
 import ContentManagement from "@/pages/admin/content-management";
 import AdminLayout from "@/components/layout/admin-layout";
 import { AuthProvider, useAdminAuth } from "@/hooks/use-admin-auth";
+import { ThemeProvider } from "@/hooks/use-theme";
+import FloatingFeedback from "@/components/ui/floating-feedback";
 
 function Router() {
   const { isAuthenticated } = useAdminAuth();
@@ -70,12 +72,15 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </AuthProvider>
+      <ThemeProvider defaultTheme="light" storageKey="memi-ui-theme">
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+            <FloatingFeedback />
+          </TooltipProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

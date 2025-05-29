@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { useTheme } from "@/hooks/use-theme";
+import { Sun, Moon } from "lucide-react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -19,25 +22,40 @@ export default function Header() {
           <img src="/assets/logo.jpg" alt="MEMI Logo" className="h-12 w-auto" />
         </Link>
         
-        <nav className="hidden md:flex items-center space-x-8">
-          <a href="#app" className="nav-link text-gray-700 hover:text-primary font-medium transition-colors">
-            Our App
+        <nav className="hidden md:flex items-center space-x-2">
+          <a href="#app" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+            <span className="relative z-10">Our App</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#about" className="nav-link text-gray-700 hover:text-primary font-medium transition-colors">
-            About
+          <a href="#about" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+            <span className="relative z-10">About</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#services" className="nav-link text-gray-700 hover:text-primary font-medium transition-colors">
-            Services
+          <a href="#services" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+            <span className="relative z-10">Services</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#divisions" className="nav-link text-gray-700 hover:text-primary font-medium transition-colors">
-            Divisions
+          <a href="#divisions" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+            <span className="relative z-10">Divisions</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#involved" className="nav-link text-gray-700 hover:text-primary font-medium transition-colors">
-            Get Involved
+          <a href="#involved" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+            <span className="relative z-10">Get Involved</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
         </nav>
         
         <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110"
+          >
+            {theme === "dark" ? (
+              <Sun className="h-5 w-5 text-yellow-500 transition-transform duration-300" />
+            ) : (
+              <Moon className="h-5 w-5 text-gray-600 transition-transform duration-300" />
+            )}
+          </button>
           <Link href="/admin/login" className="hidden md:inline-flex btn-gradient text-white px-4 py-2 rounded-button text-sm font-medium shadow-lg hover:shadow-xl transition-all">
             <i className="ri-admin-line mr-2"></i>Admin Dashboard
           </Link>

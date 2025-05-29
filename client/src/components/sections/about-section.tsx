@@ -31,13 +31,13 @@ export default function AboutSection() {
   const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
   return (
-    <section id="about" className="py-16 md:py-24 bg-white">
+    <section id="about" className="py-16 md:py-24 section-gradient-1">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
             {content.title}
           </h2>
-          <div className="w-24 h-1 bg-primary mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
         </div>
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="w-full md:w-1/2">
@@ -60,12 +60,12 @@ export default function AboutSection() {
           </div>
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-6">
             {displayStats.map((stat, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg shadow-sm card-hover">
-                <div className="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-4">
-                  <i className={`${stat.icon} text-primary ri-xl`}></i>
+              <div key={index} className="bg-white p-6 rounded-xl shadow-lg card-hover border border-blue-100">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4 icon-bounce">
+                  <i className={`${stat.icon} text-white ri-xl`}></i>
                 </div>
-                <h4 className="text-xl font-semibold text-secondary mb-2">{stat.value}</h4>
-                <p className="text-gray-600">{stat.label}</p>
+                <h4 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">{stat.value}</h4>
+                <p className="text-gray-700 font-medium">{stat.label}</p>
               </div>
             ))}
           </div>

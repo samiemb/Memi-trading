@@ -1,6 +1,8 @@
+import logoPath from "@assets/logo.jpg";
+
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-white py-16">
+    <footer className="bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 text-white py-16 relative overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>

@@ -69,47 +69,60 @@ export default function Header() {
       </div>
       
       {/* Mobile Menu */}
-      <div className={`mobile-menu fixed top-[70px] left-0 w-full h-screen bg-white shadow-lg md:hidden z-50 ${isMobileMenuOpen ? "" : "hidden"}`}>
+      <div className={`mobile-menu fixed top-[70px] left-0 w-full h-screen bg-white dark:bg-gray-900 shadow-lg md:hidden z-50 transition-all duration-300 ${isMobileMenuOpen ? "" : "hidden"}`}>
         <div className="p-6 flex flex-col space-y-4">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Menu</h3>
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5 text-yellow-500" />
+              ) : (
+                <Moon className="h-5 w-5 text-gray-600" />
+              )}
+            </button>
+          </div>
           <a
             href="#app"
-            onClick={closeMobileMenu}
-            className="text-gray-700 hover:text-primary font-medium py-2 px-4 border-b border-gray-100"
+            onClick={toggleMobileMenu}
+            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium py-3 px-4 border-b border-gray-200 dark:border-gray-700 transition-colors"
           >
             Our App
           </a>
           <a
             href="#about"
-            onClick={closeMobileMenu}
-            className="text-gray-700 hover:text-primary font-medium py-2 px-4 border-b border-gray-100"
+            onClick={toggleMobileMenu}
+            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium py-3 px-4 border-b border-gray-200 dark:border-gray-700 transition-colors"
           >
             About
           </a>
           <a
             href="#services"
-            onClick={closeMobileMenu}
-            className="text-gray-700 hover:text-primary font-medium py-2 px-4 border-b border-gray-100"
+            onClick={toggleMobileMenu}
+            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium py-3 px-4 border-b border-gray-200 dark:border-gray-700 transition-colors"
           >
             Services
           </a>
           <a
             href="#divisions"
-            onClick={closeMobileMenu}
-            className="text-gray-700 hover:text-primary font-medium py-2 px-4 border-b border-gray-100"
+            onClick={toggleMobileMenu}
+            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium py-3 px-4 border-b border-gray-200 dark:border-gray-700 transition-colors"
           >
             Divisions
           </a>
           <a
             href="#involved"
-            onClick={closeMobileMenu}
-            className="text-gray-700 hover:text-primary font-medium py-2 px-4 border-b border-gray-100"
+            onClick={toggleMobileMenu}
+            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium py-3 px-4 border-b border-gray-200 dark:border-gray-700 transition-colors"
           >
             Get Involved
           </a>
           <Link
             href="/admin/login"
-            onClick={closeMobileMenu}
-            className="text-gray-600 hover:text-primary font-medium py-2 px-4 border-t border-gray-100 mt-2 pt-4"
+            onClick={toggleMobileMenu}
+            className="btn-gradient text-white px-6 py-3 rounded-button text-center font-medium shadow-lg mt-4"
           >
             <i className="ri-admin-line mr-2"></i>Admin Dashboard
           </Link>

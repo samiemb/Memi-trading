@@ -1,0 +1,99 @@
+I have a static HTML landing page for "MEMI Trading", which includes sections like a hero, about, services, app showcase, divisions, get involved, and a footer. I want to convert this into a fully dynamic web application with the following stack and features:
+
+🌐 Frontend:
+Use React as the framework.
+
+Use Tailwind CSS for styling (the static HTML already uses Tailwind).
+
+Convert each section of the current HTML page into reusable React components:
+
+Header (responsive navigation)
+
+Hero section
+
+About section
+
+Services (with icons, bullets, and images)
+
+App showcase
+
+Business Divisions
+
+Get Involved section
+
+Footer with social links and contact info
+
+Implement routing with React Router.
+
+Add a protected admin dashboard interface:
+
+Login page (/admin/login)
+
+Dashboard home (/admin)
+
+CRUD page for services
+
+Editable About content section
+
+Optional: pages to manage divisions, app features, and get-involved content
+
+🧠 CMS/Admin Features:
+Admin login with session or JWT-based authentication.
+
+Admin can:
+
+Add, edit, delete services (title, description, features, icon, image)
+
+Update “About MEMI” section
+
+Manage app showcase features (secure payments, logistics, etc.)
+
+Upload images/icons (optional: use Cloudinary or local storage)
+
+View dashboard metrics (optional)
+
+🛠 Backend:
+Use PHP (preferably Laravel, but vanilla PHP is acceptable).
+
+Create a RESTful API for all dynamic content:
+
+GET /api/services, POST /api/services, PUT, DELETE
+
+GET/PUT /api/about
+
+POST /api/login and protected admin routes
+
+Use middleware or session-based logic to protect all admin routes.
+
+Validate all inputs and sanitize data to prevent XSS/SQL injection.
+
+🗃 Database (MySQL):
+Define a schema with at least the following tables:
+
+users: for admin login
+
+services: service title, description, features, icon name, image URL
+
+about: about section content
+
+Optionally: divisions, events, app_features
+
+📦 Project Structure:
+Create two separate folders:
+
+frontend/ → React app using Tailwind
+
+backend/ → PHP API project (Laravel or vanilla)
+
+Use .env files for environment config
+
+Store uploaded images securely (local or remote)
+
+🧪 Optional Extras:
+Add unit/API tests for critical endpoints.
+
+Make the site SEO-friendly (React Helmet).
+
+Add smooth animations using Tailwind & Framer Motion.
+
+Responsive/mobile-first design.

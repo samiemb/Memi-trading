@@ -10,7 +10,7 @@ import AdminDashboard from "@/pages/admin/dashboard";
 import AdminServices from "@/pages/admin/services";
 import AdminAbout from "@/pages/admin/about";
 import AdminLayout from "@/components/layout/admin-layout";
-import { useAdminAuth } from "@/hooks/use-admin-auth";
+import { AuthProvider, useAdminAuth } from "@/hooks/use-admin-auth";
 
 function Router() {
   const { isAuthenticated } = useAdminAuth();
@@ -59,10 +59,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

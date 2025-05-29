@@ -16,7 +16,7 @@ export const services = pgTable("services", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
-  features: jsonb("features").$type<string[]>().notNull().default([]),
+  features: text("features").array().notNull().default([]),
   icon: text("icon").notNull(),
   category: text("category").notNull(),
   imageUrl: text("image_url"),

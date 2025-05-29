@@ -3,9 +3,15 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import AdminLayout from "@/components/layout/admin-layout";
 import { Plus, Edit, Trash2, BookOpen, Calendar, Newspaper, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CourseForm, NewsForm, EventForm, TeamMemberForm } from "@/components/admin/content-forms";
 
 export default function ContentManagement() {
   const [activeTab, setActiveTab] = useState("courses");
+  const [editingItem, setEditingItem] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -68,14 +74,41 @@ export default function ContentManagement() {
     }
   };
 
+  const handleEdit = (item: any) => {
+    setEditingItem(item);
+    setIsDialogOpen(true);
+  };
+
+  const handleAdd = () => {
+    setEditingItem(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    setEditingItem(null);
+  };
+
   const renderCourses = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-bold text-slate-800">Manage Courses</h3>
-        <button className="btn-gradient text-white px-4 py-2 rounded-button flex items-center">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Course
-        </button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={handleAdd} className="btn-gradient text-white">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Course
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingItem ? "Edit Course" : "Add New Course"}
+              </DialogTitle>
+            </DialogHeader>
+            <CourseForm course={editingItem} onSuccess={handleDialogClose} />
+          </DialogContent>
+        </Dialog>
       </div>
       
       {coursesLoading ? (

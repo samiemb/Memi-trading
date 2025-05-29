@@ -75,12 +75,13 @@ export default function AppShowcaseSection() {
           </div>
           
           <div className="relative">
-            <div 
-              className="w-full max-w-md mx-auto rounded-2xl shadow-2xl h-96 bg-cover bg-center"
-              style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=600')"
-              }}
-            />
+            <div className="w-full max-w-md mx-auto">
+              <img 
+                src="/assets/memi-app-preview.png" 
+                alt="MEMI App Preview" 
+                className="w-full h-auto rounded-2xl shadow-2xl"
+              />
+            </div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-accent/10 rounded-full blur-xl"></div>
           </div>

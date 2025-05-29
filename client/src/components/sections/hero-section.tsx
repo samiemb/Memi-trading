@@ -5,7 +5,7 @@ export default function HeroSection() {
         <div 
           className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=600')"
+            backgroundImage: "url('/assets/background.png')"
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-transparent"></div>

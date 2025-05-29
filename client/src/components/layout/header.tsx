@@ -16,9 +16,7 @@ export default function Header() {
     <header className="sticky-header fixed top-0 left-0 w-full bg-white shadow-sm z-50">
       <div className="container mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-[70px]">
         <Link href="/" className="flex items-center">
-          <div className="h-10 w-32 bg-gradient-to-r from-primary to-secondary rounded flex items-center justify-center">
-            <span className="text-white font-bold text-lg">MEMI</span>
-          </div>
+          <img src="/assets/logo.jpg" alt="MEMI Logo" className="h-12 w-auto" />
         </Link>
         
         <nav className="hidden md:flex items-center space-x-8">

@@ -9,6 +9,7 @@ import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminServices from "@/pages/admin/services";
 import AdminAbout from "@/pages/admin/about";
+import ContentManagement from "@/pages/admin/content-management";
 import AdminLayout from "@/components/layout/admin-layout";
 import { AuthProvider, useAdminAuth } from "@/hooks/use-admin-auth";
 
@@ -45,6 +46,16 @@ function Router() {
         {isAuthenticated ? (
           <AdminLayout>
             <AdminAbout />
+          </AdminLayout>
+        ) : (
+          <AdminLogin />
+        )}
+      </Route>
+      
+      <Route path="/admin/content">
+        {isAuthenticated ? (
+          <AdminLayout>
+            <ContentManagement />
           </AdminLayout>
         ) : (
           <AdminLogin />

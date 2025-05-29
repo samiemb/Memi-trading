@@ -13,7 +13,7 @@ export default function AppShowcaseSection() {
       id: 1,
       title: "Secure Payments",
       description: "Advanced encryption and secure payment processing for all transactions on our platform.",
-      icon: "ri-shield-check-line"
+      icon: "ri-secure-payment-line"
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ export default function AppShowcaseSection() {
       id: 3,
       title: "Community Network",
       description: "Connect with local businesses, professionals, and opportunities in your area.",
-      icon: "ri-community-line"
+      icon: "ri-team-line"
     }
   ];
 
@@ -75,14 +75,15 @@ export default function AppShowcaseSection() {
           </div>
           
           <div className="relative">
-            <div className="w-full max-w-md mx-auto">
+            <div className="w-full max-w-lg mx-auto">
               <img 
                 src="/assets/memi-app-preview.png" 
                 alt="MEMI App Preview" 
-                className="w-full h-auto rounded-2xl shadow-2xl"
+                className="w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+            <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-gradient-to-br from-blue-600/20 to-slate-700/20 rounded-full blur-3xl"></div>
+            <div className="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-slate-600/20 to-blue-700/20 rounded-full blur-2xl"></div>
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-accent/10 rounded-full blur-xl"></div>
           </div>
         </div>

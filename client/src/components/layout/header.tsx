@@ -38,8 +38,8 @@ export default function Header() {
         </nav>
         
         <div className="flex items-center space-x-4">
-          <Link href="/admin/login" className="hidden md:inline-flex text-sm text-gray-600 hover:text-primary transition-colors">
-            <i className="ri-admin-line mr-1"></i>Admin
+          <Link href="/admin/login" className="hidden md:inline-flex btn-gradient text-white px-4 py-2 rounded-button text-sm font-medium shadow-lg hover:shadow-xl transition-all">
+            <i className="ri-admin-line mr-2"></i>Admin Dashboard
           </Link>
           <button
             onClick={toggleMobileMenu}
@@ -93,7 +93,7 @@ export default function Header() {
             onClick={closeMobileMenu}
             className="text-gray-600 hover:text-primary font-medium py-2 px-4 border-t border-gray-100 mt-2 pt-4"
           >
-            <i className="ri-admin-line mr-1"></i>Admin Login
+            <i className="ri-admin-line mr-2"></i>Admin Dashboard
           </Link>
         </div>
       </div>

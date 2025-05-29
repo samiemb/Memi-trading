@@ -16,30 +16,30 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky-header fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+    <header className="sticky-header fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50 transition-colors duration-300">
       <div className="container mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-[70px]">
         <Link href="/" className="flex items-center">
           <img src="/assets/logo.jpg" alt="MEMI Logo" className="h-12 w-auto" />
         </Link>
         
         <nav className="hidden md:flex items-center space-x-2">
-          <a href="#app" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+          <a href="#app" className="relative px-4 py-2 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:shadow-md hover:scale-105 group">
             <span className="relative z-10">Our App</span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#about" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+          <a href="#about" className="relative px-4 py-2 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:shadow-md hover:scale-105 group">
             <span className="relative z-10">About</span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#services" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+          <a href="#services" className="relative px-4 py-2 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:shadow-md hover:scale-105 group">
             <span className="relative z-10">Services</span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#divisions" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+          <a href="#divisions" className="relative px-4 py-2 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:shadow-md hover:scale-105 group">
             <span className="relative z-10">Divisions</span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>
-          <a href="#involved" className="relative px-4 py-2 text-gray-700 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 hover:shadow-md hover:scale-105 group">
+          <a href="#involved" className="relative px-4 py-2 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:shadow-md hover:scale-105 group">
             <span className="relative z-10">Get Involved</span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
           </a>

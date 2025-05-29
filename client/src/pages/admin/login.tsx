@@ -31,7 +31,8 @@ export default function AdminLogin() {
         description: "Welcome to MEMI Admin",
       });
 
-      setLocation("/admin");
+      // Force a page reload to ensure authentication state is updated
+      window.location.href = "/admin";
     } catch (error: any) {
       toast({
         title: "Login failed",

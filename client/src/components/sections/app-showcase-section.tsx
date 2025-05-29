@@ -32,31 +32,31 @@ export default function AppShowcaseSection() {
   const displayFeatures = appFeatures && appFeatures.length > 0 ? appFeatures : defaultFeatures;
 
   return (
-    <section id="app" className="py-16 md:py-24 bg-white">
+    <section id="app" className="py-16 md:py-24 section-gradient-1">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
             Our Digital Platform
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             A comprehensive digital ecosystem connecting businesses, talent, and opportunities across Tigray.
           </p>
-          <div className="w-24 h-1 bg-primary mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="space-y-6">
               {displayFeatures.map((feature) => (
-                <div key={feature.id} className="flex items-start space-x-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <i className={`${feature.icon} text-primary`}></i>
+                <div key={feature.id} className="flex items-start space-x-4 p-4 rounded-xl bg-white shadow-md border border-blue-100 card-hover">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                    <i className={`${feature.icon} text-white ri-lg`}></i>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-secondary mb-2">
+                    <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 leading-relaxed">
                       {feature.description}
                     </p>
                   </div>

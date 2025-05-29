@@ -39,11 +39,11 @@ export default function ServicesSection() {
 
   if (isLoading) {
     return (
-      <section id="services" className="py-16 md:py-24 bg-gray-50">
+      <section id="services" className="py-16 md:py-24 section-gradient-2">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">Our Services</h2>
-            <div className="w-24 h-1 bg-primary mx-auto"></div>
+            <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">Our Services</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
           </div>
           <div className="text-center">Loading services...</div>
         </div>
@@ -52,26 +52,26 @@ export default function ServicesSection() {
   }
 
   return (
-    <section id="services" className="py-16 md:py-24 bg-gray-50">
+    <section id="services" className="py-16 md:py-24 section-gradient-2">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
             Our Services
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Comprehensive solutions tailored to drive Tigray's economic growth
             and community development.
           </p>
-          <div className="w-24 h-1 bg-primary mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayServices.map((service) => (
-            <div key={service.id} className="bg-white p-6 rounded-lg shadow-sm card-hover">
-              <div className="w-14 h-14 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-6">
-                <i className={`${service.icon} text-primary ri-xl`}></i>
+            <div key={service.id} className="bg-white p-8 rounded-2xl shadow-lg card-hover border border-purple-100">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 icon-bounce">
+                <i className={`${service.icon} text-white ri-2x`}></i>
               </div>
-              <h3 className="text-xl font-semibold text-secondary mb-3">
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
                 {service.title}
               </h3>
               <p className="text-gray-600 mb-4">

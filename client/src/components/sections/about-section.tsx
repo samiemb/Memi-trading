@@ -41,7 +41,7 @@ export default function AboutSection() {
         </div>
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="w-full md:w-1/2">
-            <h3 className="text-2xl font-semibold text-secondary mb-6">
+            <h3 className="text-2xl font-semibold mb-6 text-[#182237]">
               {content.heading}
             </h3>
             <div className="text-gray-700 mb-6 space-y-4">

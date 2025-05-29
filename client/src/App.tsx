@@ -77,7 +77,7 @@ function App() {
           <TooltipProvider>
             <Toaster />
             <Router />
-            <FloatingFeedback />
+
           </TooltipProvider>
         </AuthProvider>
       </ThemeProvider>

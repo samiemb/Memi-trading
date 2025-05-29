@@ -74,6 +74,7 @@ export function CourseForm({ course, onSuccess }: { course?: any; onSuccess: () 
         },
         body: JSON.stringify({
           ...data,
+          price: parseFloat(data.price.replace('$', '')),
           imageUrl: data.image
         }),
       });
@@ -337,6 +338,7 @@ export function EventForm({ event, onSuccess }: { event?: any; onSuccess: () => 
         body: JSON.stringify({
           ...data,
           capacity: parseInt(data.capacity) || null,
+          imageUrl: data.image
         }),
       });
       if (!response.ok) throw new Error("Failed to save event");

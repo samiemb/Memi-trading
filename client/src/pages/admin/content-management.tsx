@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import AdminLayout from "@/components/layout/admin-layout";
 import { Plus, Edit, Trash2, BookOpen, Calendar, Newspaper, Users } from "lucide-react";
@@ -7,13 +7,24 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CourseForm, NewsForm, EventForm, TeamMemberForm } from "@/components/admin/content-forms";
+import { useLocation } from "wouter";
 
 export default function ContentManagement() {
+  const [location] = useLocation();
   const [activeTab, setActiveTab] = useState("courses");
   const [editingItem, setEditingItem] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Set active tab based on URL parameter
+  useEffect(() => {
+    const params = new URLSearchParams(location.split('?')[1] || '');
+    const tab = params.get('tab');
+    if (tab && ['courses', 'news', 'events', 'team'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [location]);
 
   const { data: courses, isLoading: coursesLoading } = useQuery({
     queryKey: ["/api/courses"],

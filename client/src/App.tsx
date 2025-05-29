@@ -54,7 +54,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path="/admin/content">
+      <Route path="/admin/content-management">
         {isAuthenticated ? (
           <AdminLayout>
             <ContentManagement />

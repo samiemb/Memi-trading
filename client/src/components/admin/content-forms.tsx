@@ -12,9 +12,11 @@ import { Plus, Save, X } from "lucide-react";
 interface CourseFormData {
   title: string;
   description: string;
+  instructor: string;
   duration: string;
   price: string;
   level: string;
+  category: string;
   image?: string;
 }
 
@@ -49,10 +51,12 @@ export function CourseForm({ course, onSuccess }: { course?: any; onSuccess: () 
   const [formData, setFormData] = useState<CourseFormData>({
     title: course?.title || "",
     description: course?.description || "",
+    instructor: course?.instructor || "",
     duration: course?.duration || "",
     price: course?.price || "",
     level: course?.level || "Beginner",
-    image: course?.image || "",
+    category: course?.category || "Technology",
+    image: course?.imageUrl || "",
   });
 
   const { toast } = useToast();
@@ -68,7 +72,10 @@ export function CourseForm({ course, onSuccess }: { course?: any; onSuccess: () 
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          imageUrl: data.image
+        }),
       });
       if (!response.ok) throw new Error("Failed to save course");
       return response.json();
@@ -117,6 +124,33 @@ export function CourseForm({ course, onSuccess }: { course?: any; onSuccess: () 
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
+          <Label htmlFor="instructor">Instructor</Label>
+          <Input
+            id="instructor"
+            value={formData.instructor}
+            onChange={(e) => setFormData({ ...formData, instructor: e.target.value })}
+            placeholder="e.g., John Smith"
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="category">Category</Label>
+          <select
+            id="category"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            className="w-full p-2 border rounded-md"
+            required
+          >
+            <option value="Technology">Technology</option>
+            <option value="Trading">Trading</option>
+            <option value="Finance">Finance</option>
+            <option value="Business">Business</option>
+          </select>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
           <Label htmlFor="duration">Duration</Label>
           <Input
             id="duration"
@@ -132,7 +166,7 @@ export function CourseForm({ course, onSuccess }: { course?: any; onSuccess: () 
             id="price"
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            placeholder="e.g., $299"
+            placeholder="e.g., 299.00"
             required
           />
         </div>

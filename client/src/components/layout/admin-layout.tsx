@@ -24,7 +24,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="p-6 border-b border-gray-200">
           {!isSidebarCollapsed && (
             <>
-              <h1 className="text-xl font-bold text-secondary">MEMI Admin</h1>
+              <h1 className="text-xl font-bold text-[#131b87]">MEMI Admin</h1>
               <p className="text-sm text-gray-600">Content Management</p>
             </>
           )}
@@ -73,7 +73,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </Button>
         </div>
       </aside>
-
       {/* Main Content */}
       <main className={`transition-all duration-300 ${isSidebarCollapsed ? "ml-16" : "ml-64"} min-h-screen`}>
         {/* Header */}

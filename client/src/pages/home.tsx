@@ -5,6 +5,11 @@ import AboutSection from "@/components/sections/about-section";
 import ServicesSection from "@/components/sections/services-section";
 import AppShowcaseSection from "@/components/sections/app-showcase-section";
 import TestimonialsSection from "@/components/sections/testimonials-section";
+import TeamSection from "@/components/sections/team-section";
+import CoursesSection from "@/components/sections/courses-section";
+import NewsEventsSection from "@/components/sections/news-events-section";
+import FAQSection from "@/components/sections/faq-section";
+import LocationSection from "@/components/sections/location-section";
 import CTASection from "@/components/sections/cta-section";
 
 export default function Home() {
@@ -16,7 +21,12 @@ export default function Home() {
         <AboutSection />
         <ServicesSection />
         <AppShowcaseSection />
+        <CoursesSection />
+        <NewsEventsSection />
+        <TeamSection />
         <TestimonialsSection />
+        <FAQSection />
+        <LocationSection />
         <CTASection />
       </main>
       <Footer />

@@ -1,6 +1,6 @@
 export default function CTASection() {
   return (
-    <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden">
       <div className="absolute inset-0 bg-black bg-opacity-20"></div>
       <div className="absolute inset-0">
         <div className="absolute top-10 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse"></div>

@@ -54,7 +54,7 @@ export default function AdminLogin() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-secondary">Admin Login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-[#453f69]">Admin Login</CardTitle>
           <p className="text-gray-600">Sign in to manage MEMI Trading content</p>
         </CardHeader>
         <CardContent>

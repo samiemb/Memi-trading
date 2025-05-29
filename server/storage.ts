@@ -4,6 +4,11 @@ import {
   aboutContent,
   stats,
   appFeatures,
+  courses,
+  news,
+  events,
+  teamMembers,
+  faqs,
   type User,
   type InsertUser,
   type Service,
@@ -14,6 +19,16 @@ import {
   type InsertStat,
   type AppFeature,
   type InsertAppFeature,
+  type Course,
+  type InsertCourse,
+  type News,
+  type InsertNews,
+  type Event,
+  type InsertEvent,
+  type TeamMember,
+  type InsertTeamMember,
+  type Faq,
+  type InsertFaq,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -45,6 +60,33 @@ export interface IStorage {
   createAppFeature(feature: InsertAppFeature): Promise<AppFeature>;
   updateAppFeature(id: number, feature: Partial<InsertAppFeature>): Promise<AppFeature>;
   deleteAppFeature(id: number): Promise<void>;
+
+  // Course operations
+  getAllCourses(): Promise<Course[]>;
+  createCourse(course: InsertCourse): Promise<Course>;
+  updateCourse(id: number, course: Partial<InsertCourse>): Promise<Course>;
+  deleteCourse(id: number): Promise<void>;
+
+  // News operations
+  getAllNews(): Promise<News[]>;
+  createNews(news: InsertNews): Promise<News>;
+  updateNews(id: number, news: Partial<InsertNews>): Promise<News>;
+  deleteNews(id: number): Promise<void>;
+
+  // Event operations
+  getAllEvents(): Promise<Event[]>;
+  createEvent(event: InsertEvent): Promise<Event>;
+  updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event>;
+  deleteEvent(id: number): Promise<void>;
+
+  // Team member operations
+  getAllTeamMembers(): Promise<TeamMember[]>;
+  createTeamMember(member: InsertTeamMember): Promise<TeamMember>;
+  updateTeamMember(id: number, member: Partial<InsertTeamMember>): Promise<TeamMember>;
+  deleteTeamMember(id: number): Promise<void>;
+
+  // FAQ operations
+  getAllFaqs(): Promise<Faq[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -171,6 +213,115 @@ export class DatabaseStorage implements IStorage {
 
   async deleteAppFeature(id: number): Promise<void> {
     await db.delete(appFeatures).where(eq(appFeatures.id, id));
+  }
+
+  // Course operations
+  async getAllCourses(): Promise<Course[]> {
+    return await db.select().from(courses);
+  }
+
+  async createCourse(course: InsertCourse): Promise<Course> {
+    const [newCourse] = await db
+      .insert(courses)
+      .values(course)
+      .returning();
+    return newCourse;
+  }
+
+  async updateCourse(id: number, course: Partial<InsertCourse>): Promise<Course> {
+    const [updatedCourse] = await db
+      .update(courses)
+      .set({ ...course, updatedAt: new Date() })
+      .where(eq(courses.id, id))
+      .returning();
+    return updatedCourse;
+  }
+
+  async deleteCourse(id: number): Promise<void> {
+    await db.delete(courses).where(eq(courses.id, id));
+  }
+
+  // News operations
+  async getAllNews(): Promise<News[]> {
+    return await db.select().from(news);
+  }
+
+  async createNews(newsData: InsertNews): Promise<News> {
+    const [newNews] = await db
+      .insert(news)
+      .values(newsData)
+      .returning();
+    return newNews;
+  }
+
+  async updateNews(id: number, newsData: Partial<InsertNews>): Promise<News> {
+    const [updatedNews] = await db
+      .update(news)
+      .set({ ...newsData, updatedAt: new Date() })
+      .where(eq(news.id, id))
+      .returning();
+    return updatedNews;
+  }
+
+  async deleteNews(id: number): Promise<void> {
+    await db.delete(news).where(eq(news.id, id));
+  }
+
+  // Event operations
+  async getAllEvents(): Promise<Event[]> {
+    return await db.select().from(events);
+  }
+
+  async createEvent(event: InsertEvent): Promise<Event> {
+    const [newEvent] = await db
+      .insert(events)
+      .values(event)
+      .returning();
+    return newEvent;
+  }
+
+  async updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event> {
+    const [updatedEvent] = await db
+      .update(events)
+      .set({ ...event, updatedAt: new Date() })
+      .where(eq(events.id, id))
+      .returning();
+    return updatedEvent;
+  }
+
+  async deleteEvent(id: number): Promise<void> {
+    await db.delete(events).where(eq(events.id, id));
+  }
+
+  // Team member operations
+  async getAllTeamMembers(): Promise<TeamMember[]> {
+    return await db.select().from(teamMembers);
+  }
+
+  async createTeamMember(member: InsertTeamMember): Promise<TeamMember> {
+    const [newMember] = await db
+      .insert(teamMembers)
+      .values(member)
+      .returning();
+    return newMember;
+  }
+
+  async updateTeamMember(id: number, member: Partial<InsertTeamMember>): Promise<TeamMember> {
+    const [updatedMember] = await db
+      .update(teamMembers)
+      .set({ ...member, updatedAt: new Date() })
+      .where(eq(teamMembers.id, id))
+      .returning();
+    return updatedMember;
+  }
+
+  async deleteTeamMember(id: number): Promise<void> {
+    await db.delete(teamMembers).where(eq(teamMembers.id, id));
+  }
+
+  // FAQ operations
+  async getAllFaqs(): Promise<Faq[]> {
+    return await db.select().from(faqs);
   }
 }
 

@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertServiceSchema, insertAboutContentSchema, insertStatSchema } from "@shared/schema";
+import { insertServiceSchema, insertAboutContentSchema, insertStatSchema, insertCourseSchema, insertNewsSchema, insertEventSchema, insertTeamMemberSchema } from "@shared/schema";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -175,6 +175,197 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Update stats error:', error);
       res.status(400).json({ message: 'Invalid stats data' });
+    }
+  });
+
+  // Courses CRUD routes
+  app.get('/api/courses', async (req, res) => {
+    try {
+      const courses = await storage.getAllCourses();
+      res.json(courses);
+    } catch (error) {
+      console.error('Get courses error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.post('/api/admin/courses', authenticateToken, async (req, res) => {
+    try {
+      const courseData = insertCourseSchema.parse(req.body);
+      const course = await storage.createCourse(courseData);
+      res.json(course);
+    } catch (error) {
+      console.error('Create course error:', error);
+      res.status(400).json({ message: 'Invalid course data' });
+    }
+  });
+
+  app.put('/api/admin/courses/:id', authenticateToken, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const courseData = insertCourseSchema.parse(req.body);
+      const course = await storage.updateCourse(id, courseData);
+      res.json(course);
+    } catch (error) {
+      console.error('Update course error:', error);
+      res.status(400).json({ message: 'Invalid course data' });
+    }
+  });
+
+  app.delete('/api/courses/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteCourse(id);
+      res.json({ message: 'Course deleted successfully' });
+    } catch (error) {
+      console.error('Delete course error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  // News CRUD routes
+  app.get('/api/news', async (req, res) => {
+    try {
+      const news = await storage.getAllNews();
+      res.json(news);
+    } catch (error) {
+      console.error('Get news error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.post('/api/admin/news', authenticateToken, async (req, res) => {
+    try {
+      const newsData = insertNewsSchema.parse(req.body);
+      const news = await storage.createNews(newsData);
+      res.json(news);
+    } catch (error) {
+      console.error('Create news error:', error);
+      res.status(400).json({ message: 'Invalid news data' });
+    }
+  });
+
+  app.put('/api/admin/news/:id', authenticateToken, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const newsData = insertNewsSchema.parse(req.body);
+      const news = await storage.updateNews(id, newsData);
+      res.json(news);
+    } catch (error) {
+      console.error('Update news error:', error);
+      res.status(400).json({ message: 'Invalid news data' });
+    }
+  });
+
+  app.delete('/api/news/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteNews(id);
+      res.json({ message: 'News deleted successfully' });
+    } catch (error) {
+      console.error('Delete news error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  // Events CRUD routes
+  app.get('/api/events', async (req, res) => {
+    try {
+      const events = await storage.getAllEvents();
+      res.json(events);
+    } catch (error) {
+      console.error('Get events error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.post('/api/admin/events', authenticateToken, async (req, res) => {
+    try {
+      const eventData = insertEventSchema.parse(req.body);
+      const event = await storage.createEvent(eventData);
+      res.json(event);
+    } catch (error) {
+      console.error('Create event error:', error);
+      res.status(400).json({ message: 'Invalid event data' });
+    }
+  });
+
+  app.put('/api/admin/events/:id', authenticateToken, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const eventData = insertEventSchema.parse(req.body);
+      const event = await storage.updateEvent(id, eventData);
+      res.json(event);
+    } catch (error) {
+      console.error('Update event error:', error);
+      res.status(400).json({ message: 'Invalid event data' });
+    }
+  });
+
+  app.delete('/api/events/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteEvent(id);
+      res.json({ message: 'Event deleted successfully' });
+    } catch (error) {
+      console.error('Delete event error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  // Team CRUD routes
+  app.get('/api/team', async (req, res) => {
+    try {
+      const team = await storage.getAllTeamMembers();
+      res.json(team);
+    } catch (error) {
+      console.error('Get team error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.post('/api/admin/team', authenticateToken, async (req, res) => {
+    try {
+      const teamData = insertTeamMemberSchema.parse(req.body);
+      const member = await storage.createTeamMember(teamData);
+      res.json(member);
+    } catch (error) {
+      console.error('Create team member error:', error);
+      res.status(400).json({ message: 'Invalid team member data' });
+    }
+  });
+
+  app.put('/api/admin/team/:id', authenticateToken, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const teamData = insertTeamMemberSchema.parse(req.body);
+      const member = await storage.updateTeamMember(id, teamData);
+      res.json(member);
+    } catch (error) {
+      console.error('Update team member error:', error);
+      res.status(400).json({ message: 'Invalid team member data' });
+    }
+  });
+
+  app.delete('/api/team/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteTeamMember(id);
+      res.json({ message: 'Team member deleted successfully' });
+    } catch (error) {
+      console.error('Delete team member error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  // FAQ routes
+  app.get('/api/faqs', async (req, res) => {
+    try {
+      const faqs = await storage.getAllFaqs();
+      res.json(faqs);
+    } catch (error) {
+      console.error('Get faqs error:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
   });
 

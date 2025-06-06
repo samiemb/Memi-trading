@@ -9,6 +9,9 @@ import {
   events,
   teamMembers,
   faqs,
+  enrollments,
+  appShowcase,
+  testimonials,
   type User,
   type InsertUser,
   type Service,
@@ -29,9 +32,15 @@ import {
   type InsertTeamMember,
   type Faq,
   type InsertFaq,
-} from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
+  type Enrollment,
+  type InsertEnrollment,
+  type AppShowcase,
+  type InsertAppShowcase,
+  type Testimonial,
+  type InsertTestimonial,
+} from "../shared/schema.ts";
+import { db } from "./db.js";
+import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
@@ -87,6 +96,35 @@ export interface IStorage {
 
   // FAQ operations
   getAllFaqs(): Promise<Faq[]>;
+  createFAQ(data: {
+    question: string;
+    answer: string;
+    category: string;
+    isActive?: boolean;
+  }): Promise<Faq>;
+  updateFAQ(id: number, data: {
+    question: string;
+    answer: string;
+    category: string;
+    isActive?: boolean;
+  }): Promise<Faq>;
+  deleteFAQ(id: number): Promise<void>;
+
+  // Enrollment operations
+  createEnrollment(data: InsertEnrollment): Promise<Enrollment>;
+  getEnrollments(): Promise<Enrollment[]>;
+  updateEnrollmentStatus(id: number, status: string): Promise<Enrollment>;
+  deleteEnrollment(id: number): Promise<void>;
+  
+  // App Showcase operations
+  getAppShowcase(): Promise<AppShowcase | undefined>;
+  updateAppShowcase(data: Partial<InsertAppShowcase>): Promise<AppShowcase>;
+
+  // Testimonial operations
+  getAllTestimonials(): Promise<Testimonial[]>;
+  createTestimonial(data: InsertTestimonial): Promise<Testimonial>;
+  updateTestimonial(id: number, data: Partial<InsertTestimonial>): Promise<Testimonial>;
+  deleteTestimonial(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -238,12 +276,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteCourse(id: number): Promise<void> {
+    // First delete all enrollments for this course
+    await db.delete(enrollments).where(eq(enrollments.courseId, id));
+    // Then delete the course
     await db.delete(courses).where(eq(courses.id, id));
   }
 
   // News operations
   async getAllNews(): Promise<News[]> {
-    return await db.select().from(news);
+    return await db.select().from(news).orderBy(desc(news.createdAt));
   }
 
   async createNews(newsData: InsertNews): Promise<News> {
@@ -269,7 +310,7 @@ export class DatabaseStorage implements IStorage {
 
   // Event operations
   async getAllEvents(): Promise<Event[]> {
-    return await db.select().from(events);
+    return await db.select().from(events).orderBy(desc(events.eventDate));
   }
 
   async createEvent(event: InsertEvent): Promise<Event> {
@@ -321,7 +362,165 @@ export class DatabaseStorage implements IStorage {
 
   // FAQ operations
   async getAllFaqs(): Promise<Faq[]> {
-    return await db.select().from(faqs);
+    return await db.select().from(faqs).orderBy(faqs.displayOrder);
+  }
+
+  async createFAQ(data: {
+    question: string;
+    answer: string;
+    category: string;
+    isActive?: boolean;
+  }): Promise<Faq> {
+    const [faq] = await db.insert(faqs).values({
+      question: data.question,
+      answer: data.answer,
+      category: data.category,
+      isActive: data.isActive ?? true,
+      displayOrder: 0,
+    }).returning();
+    return faq;
+  }
+
+  async updateFAQ(id: number, data: {
+    question: string;
+    answer: string;
+    category: string;
+    isActive?: boolean;
+  }): Promise<Faq> {
+    const [faq] = await db
+      .update(faqs)
+      .set({
+        question: data.question,
+        answer: data.answer,
+        category: data.category,
+        isActive: data.isActive ?? true,
+        updatedAt: new Date(),
+      })
+      .where(eq(faqs.id, id))
+      .returning();
+    return faq;
+  }
+
+  async deleteFAQ(id: number): Promise<void> {
+    await db.delete(faqs).where(eq(faqs.id, id));
+  }
+
+  // Enrollment operations
+  async createEnrollment(data: InsertEnrollment): Promise<Enrollment> {
+    const [enrollment] = await db
+      .insert(enrollments)
+      .values(data)
+      .returning();
+    return enrollment;
+  }
+
+  async getEnrollments(): Promise<Enrollment[]> {
+    return await db.select().from(enrollments).orderBy(desc(enrollments.createdAt));
+  }
+
+  async updateEnrollmentStatus(id: number, status: string): Promise<Enrollment> {
+    const [updatedEnrollment] = await db
+      .update(enrollments)
+      .set({ status, updatedAt: new Date() })
+      .where(eq(enrollments.id, id))
+      .returning();
+    return updatedEnrollment;
+  }
+
+  async deleteEnrollment(id: number): Promise<void> {
+    console.log('Attempting to delete enrollment with ID:', id);
+    try {
+      const result = await db.delete(enrollments).where(eq(enrollments.id, id));
+      console.log('Delete result:', result);
+    } catch (error) {
+      console.error('Error deleting enrollment:', error);
+      throw error;
+    }
+  }
+  
+  // App Showcase operations
+  async getAppShowcase(): Promise<AppShowcase | undefined> {
+    const [showcase] = await db.select().from(appShowcase).limit(1);
+    return showcase;
+  }
+
+  async updateAppShowcase(data: Partial<InsertAppShowcase>): Promise<AppShowcase> {
+    console.log('Received data for updateAppShowcase:', JSON.stringify(data, null, 2));
+    const existing = await this.getAppShowcase();
+
+    if (existing) {
+      try {
+        const [updated] = await db
+          .update(appShowcase)
+          .set({
+            ...data,
+            updatedAt: new Date(),
+          })
+          .where(eq(appShowcase.id, existing.id))
+          .returning();
+
+        if (!updated) {
+          console.error("Failed to update app showcase: Update returned no data.");
+          throw new Error("Failed to update app showcase: Update returned no data.");
+        }
+        console.log('Successfully updated app showcase.');
+        return updated;
+      } catch (error) {
+        console.error('Error updating app showcase in database:', error);
+        throw error;
+      }
+    } else {
+      console.log('No existing app showcase found, attempting to create.');
+      if (data.title === undefined || data.description === undefined || data.features === undefined || data.sliderImages === undefined) {
+        console.error("Missing required fields to create app showcase");
+        throw new Error("Missing required fields to create app showcase");
+      }
+
+      try {
+        const [created] = await db
+          .insert(appShowcase)
+          .values({
+            title: data.title,
+            description: data.description,
+            features: data.features as any,
+            sliderImages: data.sliderImages as any,
+          })
+          .returning();
+
+        if (!created) {
+          console.error("Failed to create app showcase: Insert returned no data.");
+          throw new Error("Failed to create app showcase: Insert returned no data.");
+        }
+        console.log('Successfully created app showcase.');
+        return created;
+      } catch (error) {
+        console.error('Error creating app showcase in database:', error);
+        throw error;
+      }
+    }
+  }
+
+  // Testimonial operations
+  async getAllTestimonials(): Promise<Testimonial[]> {
+    return await db.select().from(testimonials).orderBy(desc(testimonials.displayOrder));
+  }
+
+  async createTestimonial(data: InsertTestimonial): Promise<Testimonial> {
+    const [testimonial] = await db.insert(testimonials).values(data).returning();
+    return testimonial;
+  }
+
+  async updateTestimonial(id: number, data: Partial<InsertTestimonial>): Promise<Testimonial> {
+    const [testimonial] = await db
+      .update(testimonials)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(testimonials.id, id))
+      .returning();
+    return testimonial;
+  }
+
+  async deleteTestimonial(id: number): Promise<void> {
+    await db.delete(testimonials).where(eq(testimonials.id, id));
   }
 }
 

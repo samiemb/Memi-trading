@@ -1,15 +1,46 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from "ws";
-import * as schema from "@shared/schema";
+import { drizzle } from 'drizzle-orm/node-postgres';
+import pkg from 'pg';
+const { Pool } = pkg;
+import { config } from './config';
+import { logger } from './utils/logger';
 
-neonConfig.webSocketConstructor = ws;
+// Create a connection pool
+export const pool = new Pool({
+  connectionString: config.database.url,
+  ssl: config.database.ssl ? { rejectUnauthorized: false } : false,
+  max: 20, // Maximum number of clients in the pool
+  idleTimeoutMillis: 30000, // How long a client is allowed to remain idle before being closed
+  connectionTimeoutMillis: 2000, // How long to wait for a connection
+});
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+// Handle pool errors
+pool.on('error', (err) => {
+  logger.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
+// Create the database instance
+export const db = drizzle(pool);
+
+// Test database connection
+export async function testConnection() {
+  try {
+    const client = await pool.connect();
+    logger.info('Database connection successful');
+    client.release();
+  } catch (error) {
+    logger.error('Database connection failed:', error);
+    throw error;
+  }
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+// Close the pool
+export async function closePool() {
+  try {
+    await pool.end();
+    logger.info('Database pool closed');
+  } catch (error) {
+    logger.error('Error closing database pool:', error);
+    throw error;
+  }
+}

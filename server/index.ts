@@ -1,11 +1,41 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, serveStatic } from "./vite";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import compression from 'compression';
+import { config } from './config';
+import { securityMiddleware } from './middleware/security';
+import { logger, logError } from './utils/logger';
+import { setup } from './utils/setup';
+import { errorHandler } from './utils/errors';
+import { testConnection, closePool } from './db';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
+// Apply security middleware
+app.use(securityMiddleware);
+
+// Compression middleware
+app.use(compression());
+
+// Body parsing middleware with limits
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// Serve uploaded files with proper caching
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '1d',
+  etag: true
+}));
+
+// Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -20,51 +50,102 @@ app.use((req, res, next) => {
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
+      logger.info({
+        method: req.method,
+        path,
+        status: res.statusCode,
+        duration,
+        response: capturedJsonResponse
+      });
     }
   });
 
   next();
 });
 
-(async () => {
-  const server = await registerRoutes(app);
-
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: config.nodeEnv
   });
+});
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+// Serve Swagger UI documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+let server: any;
+
+async function startServer() {
+  try {
+    // Run setup
+    await setup();
+
+    // Test database connection
+    await testConnection();
+
+    server = await registerRoutes(app);
+
+    // Error handling middleware
+    app.use(errorHandler);
+
+    // Setup Vite in development
+    if (config.nodeEnv === 'development') {
+      await setupVite(app, server);
+    } else {
+      serveStatic(app);
+    }
+
+    // Start the server
+    server.listen(config.port, () => {
+      logger.info(`Server running in ${config.nodeEnv} mode on port ${config.port}`);
+    });
+  } catch (error) {
+    logError(error as Error);
+    process.exit(1);
   }
+}
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
-})();
+// Graceful shutdown
+async function shutdown(signal: string) {
+  logger.info(`Received ${signal}. Starting graceful shutdown...`);
+
+  try {
+    // Close the server
+    if (server) {
+      await new Promise((resolve) => {
+        server.close(resolve);
+      });
+      logger.info('Server closed');
+    }
+
+    // Close database pool
+    await closePool();
+
+    logger.info('Graceful shutdown completed');
+    process.exit(0);
+  } catch (error) {
+    logger.error('Error during shutdown:', error);
+    process.exit(1);
+  }
+}
+
+// Handle shutdown signals
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception:', error);
+  shutdown('uncaughtException');
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  shutdown('unhandledRejection');
+});
+
+// Start the server
+startServer();

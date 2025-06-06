@@ -133,6 +133,45 @@ export const faqs = pgTable("faqs", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const enrollments = pgTable("enrollments", {
+  id: serial("id").primaryKey(),
+  courseId: integer("course_id").notNull().references(() => courses.id),
+  courseTitle: varchar("course_title", { length: 255 }).notNull(),
+  fullName: varchar("full_name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }).notNull(),
+  education: text("education").notNull(),
+  experience: text("experience").notNull(),
+  motivation: text("motivation").notNull(),
+  status: varchar("status", { length: 50 }).default("pending"),
+  enrollmentDate: timestamp("enrollment_date").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const appShowcase = pgTable('app_showcase', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  features: jsonb('features').notNull(),
+  sliderImages: jsonb('slider_images').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export const testimonials = pgTable("testimonials", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  position: varchar("position", { length: 255 }).notNull(),
+  content: text("content").notNull(),
+  imageUrl: varchar("image_url", { length: 255 }),
+  rating: integer("rating").notNull().default(5),
+  isActive: boolean("is_active").default(true),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -179,6 +218,12 @@ export const insertEventSchema = createInsertSchema(events).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  eventDate: z.union([z.date(), z.string(), z.number()]).transform((val) => {
+    if (typeof val === 'string') return new Date(val);
+    if (typeof val === 'number') return new Date(val);
+    return val;
+  })
 });
 
 export const insertTeamMemberSchema = createInsertSchema(teamMembers).omit({
@@ -188,6 +233,30 @@ export const insertTeamMemberSchema = createInsertSchema(teamMembers).omit({
 });
 
 export const insertFaqSchema = createInsertSchema(faqs).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertEnrollmentSchema = createInsertSchema(enrollments).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  enrollmentDate: z.union([z.date(), z.string(), z.number()]).transform((val) => {
+    if (typeof val === 'string') return new Date(val);
+    if (typeof val === 'number') return new Date(val);
+    return val;
+  })
+});
+
+export const insertAppShowcaseSchema = createInsertSchema(appShowcase).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTestimonialSchema = createInsertSchema(testimonials).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
@@ -213,3 +282,9 @@ export type InsertTeamMember = z.infer<typeof insertTeamMemberSchema>;
 export type TeamMember = typeof teamMembers.$inferSelect;
 export type InsertFaq = z.infer<typeof insertFaqSchema>;
 export type Faq = typeof faqs.$inferSelect;
+export type InsertEnrollment = z.infer<typeof insertEnrollmentSchema>;
+export type Enrollment = typeof enrollments.$inferSelect;
+export type InsertAppShowcase = z.infer<typeof insertAppShowcaseSchema>;
+export type AppShowcase = typeof appShowcase.$inferSelect;
+export type Testimonial = typeof testimonials.$inferSelect;
+export type InsertTestimonial = typeof testimonials.$inferInsert;

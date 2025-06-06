@@ -11,6 +11,7 @@ import NewsEventsSection from "@/components/sections/news-events-section";
 import FAQSection from "@/components/sections/faq-section";
 import LocationSection from "@/components/sections/location-section";
 import CTASection from "@/components/sections/cta-section";
+import GetInvolvedSection from "@/components/sections/get-involved-section";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
         <FAQSection />
         <LocationSection />
         <CTASection />
+        <GetInvolvedSection />
       </main>
       <Footer />
     </div>

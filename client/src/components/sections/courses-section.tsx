@@ -1,13 +1,19 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Users, Star, BookOpen, Award } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { EnrollmentForm } from "@/components/forms/enrollment-form";
 
 export default function CoursesSection() {
+  const [selectedCourse, setSelectedCourse] = useState<{ id: number; title: string } | null>(null);
+  const [isEnrollmentOpen, setIsEnrollmentOpen] = useState(false);
+
   const { data: courses, isLoading } = useQuery({
     queryKey: ["/api/courses"],
     retry: false,
   });
 
-  const defaultCourses = [
+  const displayCourses = Array.isArray(courses) && courses.length > 0 ? courses : [
     {
       id: 1,
       title: "Web Development Fundamentals",
@@ -88,8 +94,6 @@ export default function CoursesSection() {
     }
   ];
 
-  const displayCourses = courses && courses.length > 0 ? courses : defaultCourses;
-
   const getLevelColor = (level: string) => {
     switch (level.toLowerCase()) {
       case 'beginner': return 'bg-green-100 text-green-800';
@@ -100,7 +104,7 @@ export default function CoursesSection() {
   };
 
   return (
-    <section className="py-20 bg-white">
+    <section id="courses" className="py-20 bg-white">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-16">
           <div className="flex justify-center mb-4">
@@ -109,17 +113,17 @@ export default function CoursesSection() {
             </div>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
-            Professional Courses
+            Professional Trainings and Certifications
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto mb-4">
-            Advance your skills with our expertly designed courses taught by industry professionals and experienced instructors.
+            Advance your skills with our expertly designed Trainings given by industry professionals and experienced instructors.
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-700 to-slate-800 mx-auto rounded-full"></div>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, index) => (
+            {[...Array(6)].map((_, index: number) => (
               <div key={index} className="bg-white rounded-2xl shadow-lg animate-pulse overflow-hidden">
                 <div className="h-48 bg-gray-300"></div>
                 <div className="p-6">
@@ -132,7 +136,7 @@ export default function CoursesSection() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayCourses.map((course, index) => (
+            {(displayCourses || []).map((course: any, index: number) => (
               <div 
                 key={course.id} 
                 className="bg-white rounded-2xl shadow-lg card-hover border border-blue-100 overflow-hidden fade-in"
@@ -201,7 +205,13 @@ export default function CoursesSection() {
                     </div>
                   </div>
                   
-                  <button className="w-full btn-gradient text-white py-3 rounded-button font-semibold shadow-lg">
+                  <button 
+                    onClick={() => {
+                      setSelectedCourse({ id: course.id, title: course.title });
+                      setIsEnrollmentOpen(true);
+                    }}
+                    className="w-full btn-gradient text-white py-3 rounded-button font-semibold shadow-lg"
+                  >
                     Enroll Now
                   </button>
                 </div>
@@ -212,10 +222,27 @@ export default function CoursesSection() {
         
         <div className="text-center mt-12">
           <button className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-button font-semibold hover:bg-blue-600 hover:text-white transition-all">
-            View All Courses
+            View All Trainings
           </button>
         </div>
       </div>
+
+      <Dialog open={isEnrollmentOpen} onOpenChange={setIsEnrollmentOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              Enroll in {selectedCourse?.title}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedCourse && (
+            <EnrollmentForm
+              courseId={selectedCourse.id}
+              courseTitle={selectedCourse.title}
+              onSuccess={() => setIsEnrollmentOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

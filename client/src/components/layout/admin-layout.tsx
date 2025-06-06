@@ -2,10 +2,30 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
+import { 
+  LayoutDashboard, 
+  BookOpen, 
+  Newspaper, 
+  Calendar, 
+  Users, 
+  CheckCircle,
+  Smartphone,
+  Settings,
+  Info,
+  LogOut
+} from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
+
+const navigation = [
+  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Services', href: '/admin/services', icon: Settings },
+  { name: 'About Content', href: '/admin/about', icon: Info },
+  { name: 'Content Management', href: '/admin/content-management', icon: BookOpen },
+  { name: 'App Showcase', href: '/admin/app-showcase', icon: Smartphone },
+];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [, setLocation] = useLocation();
@@ -32,33 +52,20 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         
         <nav className="p-4">
           <ul className="space-y-2">
-            <li>
-              <Link
-                href="/admin"
-                className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
-              >
-                <i className="ri-dashboard-line mr-3"></i>
-                {!isSidebarCollapsed && "Dashboard"}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/admin/services"
-                className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
-              >
-                <i className="ri-service-line mr-3"></i>
-                {!isSidebarCollapsed && "Services"}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/admin/about"
-                className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
-              >
-                <i className="ri-information-line mr-3"></i>
-                {!isSidebarCollapsed && "About Content"}
-              </Link>
-            </li>
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+                  >
+                    <Icon className="w-5 h-5 mr-3" />
+                    {!isSidebarCollapsed && item.name}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
         
@@ -68,7 +75,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             onClick={handleLogout}
             className="w-full justify-start"
           >
-            <i className="ri-logout-box-line mr-3"></i>
+            <LogOut className="w-5 h-5 mr-3" />
             {!isSidebarCollapsed && "Logout"}
           </Button>
         </div>
@@ -87,7 +94,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </Button>
             
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 admin-user-display">
                 <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                   <i className="ri-user-line text-primary"></i>
                 </div>

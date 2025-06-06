@@ -1,93 +1,107 @@
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import ImageSlider from "@/components/ui/image-slider";
+import BackToTop from "@/components/ui/back-to-top";
+
+interface AppFeature {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface AppShowcase {
+  title: string;
+  description: string;
+  features: AppFeature[];
+  sliderImages: {
+    src: string;
+    alt: string;
+  }[];
+}
+
+const defaultSliderImages = [
+  {
+    src: "/assets/slider/slide1.jpg",
+    alt: "MEMI Trading Platform Interface"
+  },
+  {
+    src: "/assets/slider/slide2.jpg",
+    alt: "Real-time Market Analysis"
+  },
+  {
+    src: "/assets/slider/slide3.jpg",
+    alt: "Advanced Trading Tools"
+  }
+];
+
+const defaultFeatures: AppFeature[] = [
+  {
+    id: 1,
+    title: "Secure Payments",
+    description: "Advanced encryption and secure payment processing for all transactions on our platform.",
+    icon: "ri-secure-payment-line"
+  },
+  {
+    id: 2,
+    title: "Smart Logistics",
+    description: "Efficient delivery and logistics management connecting local businesses with customers.",
+    icon: "ri-truck-line"
+  },
+  {
+    id: 3,
+    title: "Community Network",
+    description: "Connect with local businesses, professionals, and opportunities in your area.",
+    icon: "ri-team-line"
+  }
+];
 
 export default function AppShowcaseSection() {
-  const { data: appFeatures } = useQuery({
-    queryKey: ["/api/app-features"],
-    queryFn: () => api.getAppFeatures(),
-  });
-
-  // Default features when no data is available
-  const defaultFeatures = [
-    {
-      id: 1,
-      title: "Secure Payments",
-      description: "Advanced encryption and secure payment processing for all transactions on our platform.",
-      icon: "ri-secure-payment-line"
-    },
-    {
-      id: 2,
-      title: "Smart Logistics",
-      description: "Efficient delivery and logistics management connecting local businesses with customers.",
-      icon: "ri-truck-line"
-    },
-    {
-      id: 3,
-      title: "Community Network",
-      description: "Connect with local businesses, professionals, and opportunities in your area.",
-      icon: "ri-team-line"
-    }
-  ];
-
-  const displayFeatures = appFeatures && appFeatures.length > 0 ? appFeatures : defaultFeatures;
+  const displayData = {
+    title: "MEMI Trading Platform",
+    description: "Experience the future of trading with our advanced platform. Real-time analytics, powerful tools, and intuitive interface - all in one place.",
+    features: defaultFeatures,
+    sliderImages: defaultSliderImages
+  };
 
   return (
-    <section id="app" className="py-16 md:py-24 section-gradient-1">
+    <section id="app" className="relative py-12 sm:py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
-            Our Digital Platform
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            {displayData.title}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            A comprehensive digital ecosystem connecting businesses, talent, and opportunities across Tigray.
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
+            {displayData.description}
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="space-y-6">
-              {displayFeatures.map((feature) => (
-                <div key={feature.id} className="flex items-start space-x-4 p-4 rounded-xl bg-white shadow-md border border-blue-100 card-hover">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                    <i className={`${feature.icon} text-white ri-lg`}></i>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
+        {/* Image Slider */}
+        <div className="w-full -mx-4 md:-mx-6 lg:-mx-8 mb-8 sm:mb-12 md:mb-16">
+          <ImageSlider images={displayData.sliderImages} />
+        </div>
+
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
+          {displayData.features.map((feature) => (
+            <div 
+              key={feature.id}
+              className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="flex items-center mb-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center mr-3">
+                  <i className={`${feature.icon} text-white text-xl`}></i>
                 </div>
-              ))}
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
+                  {feature.title}
+                </h3>
+              </div>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+                {feature.description}
+              </p>
             </div>
-            
-            <div className="mt-8">
-              <a
-                href="#contact"
-                className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all"
-              >
-                Join Our Platform
-              </a>
-            </div>
-          </div>
-          
-          <div className="relative">
-            <div className="w-full max-w-lg mx-auto">
-              <img 
-                src="/assets/memi-app-preview.png" 
-                alt="MEMI App Preview" 
-                className="w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-gradient-to-br from-blue-600/20 to-slate-700/20 rounded-full blur-3xl"></div>
-            <div className="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-slate-600/20 to-blue-700/20 rounded-full blur-2xl"></div>
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-accent/10 rounded-full blur-xl"></div>
-          </div>
+          ))}
         </div>
       </div>
+      <BackToTop />
     </section>
   );
 }

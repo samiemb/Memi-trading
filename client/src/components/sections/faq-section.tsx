@@ -2,10 +2,17 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
 
+interface FAQ {
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+}
+
 export default function FAQSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   
-  const { data: faqs, isLoading } = useQuery({
+  const { data: faqs, isLoading } = useQuery<FAQ[]>({
     queryKey: ["/api/faqs"],
     retry: false,
   });
@@ -55,14 +62,14 @@ export default function FAQSection() {
     },
     {
       id: 8,
-      question: "Are your courses and training programs certified?",
+      question: "Are your training programs certified?",
       answer: "Yes, our training programs are designed to meet industry standards and many offer certifications. We partner with recognized institutions to ensure our participants receive valuable, recognized credentials.",
       category: "Programs"
     }
   ];
 
   const displayFaqs = faqs && faqs.length > 0 ? faqs : defaultFaqs;
-  const categories = [...new Set(displayFaqs.map(faq => faq.category))];
+  const categories = Array.from(new Set(displayFaqs.map(faq => faq.category)));
 
   const toggleFaq = (id: number) => {
     setOpenFaq(openFaq === id ? null : id);

@@ -28,9 +28,11 @@ export default function LocationSection() {
                   <div>
                     <h4 className="font-semibold text-slate-800 mb-1">Address</h4>
                     <p className="text-gray-600">
-                      MEMI Trading Building<br />
-                      Mekelle, Tigray Region<br />
-                      Ethiopia
+                      <a href="https://maps.app.goo.gl/rxXHuyaf1CrTop6w6" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                        MEMI Trading Building<br />
+                        Mekelle, Tigray Region<br />
+                        Ethiopia
+                      </a>
                     </p>
                   </div>
                 </div>
@@ -41,8 +43,7 @@ export default function LocationSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-800 mb-1">Phone</h4>
-                    <p className="text-gray-600">+251 XXX XXX XXX</p>
-                    <p className="text-gray-600">+251 XXX XXX XXX</p>
+                    <p className="text-gray-600">+251919000246</p>
                   </div>
                 </div>
 
@@ -52,8 +53,7 @@ export default function LocationSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-800 mb-1">Email</h4>
-                    <p className="text-gray-600">info@memitrading.et</p>
-                    <p className="text-gray-600">contact@memitrading.et</p>
+                    <p className="text-gray-600">ceo@memiplc.com</p>
                   </div>
                 </div>
 
@@ -63,8 +63,7 @@ export default function LocationSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-800 mb-1">Office Hours</h4>
-                    <p className="text-gray-600">Monday - Friday: 8:00 AM - 6:00 PM</p>
-                    <p className="text-gray-600">Saturday: 9:00 AM - 2:00 PM</p>
+                    <p className="text-gray-600">Monday - Saturday: 2:30 PM - 11:30 PM</p>
                     <p className="text-gray-600">Sunday: Closed</p>
                   </div>
                 </div>
@@ -81,18 +80,16 @@ export default function LocationSection() {
           {/* Map */}
           <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-2 rounded-2xl border border-blue-100">
             <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-              <div className="aspect-w-16 aspect-h-12 h-96">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3869.4267476899994!2d39.475334814742805!3d13.496667890391847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164226a4aa5c3c6b%3A0x8b2c5c5c5c5c5c5!2sMekelle%2C%20Ethiopia!5e0!3m2!1sen!2s!4v1623456789012!5m2!1sen!2s"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
+              <div className="map-container">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d314.7509425501666!2d39.456186541129!3d13.474994321034263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2set!4v1749101299686!5m2!1sen!2set" 
+                  width="100%" 
+                  height="450" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full"
-                  title="MEMI Trading Location"
-                ></iframe>
+                />
               </div>
               
               <div className="p-4 bg-gradient-to-r from-blue-600 to-slate-700 text-white">

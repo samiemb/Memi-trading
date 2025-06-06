@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="relative pt-[70px] min-h-[600px] w-full overflow-hidden">
+    <section id="hero-section" className="relative pt-[70px] min-h-[600px] w-full overflow-hidden">
       <div className="absolute inset-0 w-full h-full z-0">
         <div 
           className="w-full h-full bg-cover bg-center bg-no-repeat"
@@ -26,12 +26,6 @@ export default function HeroSection() {
             community engagement.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="#app"
-              className="btn-gradient text-white px-8 py-3 rounded-button font-medium text-center whitespace-nowrap shadow-lg"
-            >
-              Learn About Our App
-            </a>
             <a
               href="#involved"
               className="border-2 border-purple-500 text-purple-600 px-8 py-3 rounded-button font-medium text-center whitespace-nowrap hover:bg-purple-500 hover:text-white transition-all shadow-lg"

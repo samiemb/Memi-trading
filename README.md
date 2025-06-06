@@ -26,12 +26,14 @@ A modern, responsive website for MEMI Trading, showcasing their comprehensive se
   - Lucide Icons
   - React Query
   - Wouter (Routing)
+  - Vite (Build Tool)
 
 - **Backend:**
   - Node.js
   - Express
   - PostgreSQL
   - Drizzle ORM
+  - Swagger (API Documentation)
 
 ## Installation and Setup
 
@@ -46,23 +48,28 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/samiemb/memi-trading.git
-cd memi-trading
+git clone https://github.com/samiemb/Memi-trading.git
+cd Memi-trading
 ```
 
-### Step 2: Set Up the Backend
+### Step 2: Install Dependencies
 
-1. Navigate to the server directory:
-   ```bash
-   cd server
-   ```
+```bash
+# Install root dependencies
+npm install
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+# Install client dependencies
+cd client
+npm install
 
-3. Create a `.env` file in the server directory with the following content:
+# Install server dependencies
+cd ../server
+npm install
+```
+
+### Step 3: Set Up the Backend
+
+1. Create a `.env` file in the server directory with the following content:
    ```env
    # Database Configuration
    DATABASE_URL=postgresql://username:password@localhost:5432/memi_db
@@ -80,7 +87,7 @@ cd memi-trading
    ADMIN_PASSWORD=your_secure_password
    ```
 
-4. Create the database:
+2. Create the database:
    ```bash
    # Log into PostgreSQL
    psql -U postgres
@@ -92,53 +99,50 @@ cd memi-trading
    \q
    ```
 
-5. Run database migrations:
+3. Run database migrations:
    ```bash
+   cd server
    npm run db:migrate
    ```
 
-6. Create admin user:
+4. Create admin user:
    ```bash
    npm run create-admin
    ```
 
-### Step 3: Set Up the Frontend
+### Step 4: Set Up the Frontend
 
-1. Navigate to the client directory:
-   ```bash
-   cd ../client
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file in the client directory:
+1. Create a `.env` file in the client directory:
    ```env
    VITE_API_URL=http://localhost:3001
    ```
 
-### Step 4: Running the Application
+### Step 5: Running the Application
 
-1. Start the backend server (from the server directory):
+1. Start both frontend and backend servers using the development script:
    ```bash
-   cd server
+   # From the root directory
    npm run dev
    ```
 
-2. In a new terminal, start the frontend development server (from the client directory):
+   Or start them separately:
    ```bash
+   # Start the backend server (from the server directory)
+   cd server
+   npm run dev
+
+   # In a new terminal, start the frontend development server (from the client directory)
    cd client
    npm run dev
    ```
 
-3. Access the application:
+2. Access the application:
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:3001
    - Admin Dashboard: http://localhost:5173/admin/login
+   - API Documentation: http://localhost:3001/api-docs
 
-### Step 5: Building for Production
+### Step 6: Building for Production
 
 1. Build the frontend:
    ```bash
@@ -163,23 +167,35 @@ cd memi-trading
 ```
 memi-trading/
 ├── client/                 # Frontend React application
-│   ├── src/
+│   ├── src/               # Source code
 │   │   ├── components/    # Reusable UI components
 │   │   ├── pages/        # Page components
 │   │   ├── hooks/        # Custom React hooks
 │   │   ├── lib/          # Utility functions and API
 │   │   └── styles/       # Global styles
-│   └── public/           # Static assets
+│   ├── public/           # Static assets
+│   └── vercel.json       # Vercel deployment config
 │
 ├── server/                # Backend Express application
-│   ├── src/
-│   │   ├── controllers/  # Route controllers
-│   │   ├── models/       # Database models
-│   │   ├── routes/       # API routes
-│   │   └── utils/        # Utility functions
-│   └── migrations/       # Database migrations
+│   ├── migrations/       # Database migrations
+│   ├── middleware/       # Express middleware
+│   ├── utils/           # Utility functions
+│   ├── uploads/         # File upload directory
+│   ├── routes.ts        # API routes
+│   ├── storage.ts       # File storage handling
+│   ├── db.ts           # Database configuration
+│   ├── config.ts       # Server configuration
+│   └── swagger.ts      # API documentation
 │
-└── shared/               # Shared types and utilities
+├── shared/               # Shared types and utilities
+├── migrations/          # Root level migrations
+├── scripts/            # Utility scripts
+├── uploads/            # Root level uploads
+├── logs/              # Application logs
+├── drizzle.config.ts  # Drizzle ORM configuration
+├── vite.config.ts     # Vite configuration
+├── tailwind.config.ts # Tailwind CSS configuration
+└── tsconfig.json      # TypeScript configuration
 ```
 
 ## Troubleshooting
@@ -197,6 +213,10 @@ memi-trading/
    - Default admin credentials are set in the server's `.env`
    - You can change them after first login
 
+4. **File Upload Issues**
+   - Ensure the `uploads` directory exists and has write permissions
+   - Check file size limits in the server configuration
+
 ## Contributing
 
 1. Fork the repository
@@ -213,4 +233,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 MEMI Trading - [@Memitrading](https://x.com/Memitrading)
 
-Project Link: [https://github.com/yourusername/memi-trading](https://github.com/yourusername/memi-trading) 
+Project Link: [https://github.com/samiemb/Memi-trading](https://github.com/samiemb/Memi-trading) 
